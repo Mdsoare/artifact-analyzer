@@ -1,8 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["Artifact Analyzer CI Pipeline"]
+    types: [completed]
+    branches: ["main", "master"]
 
 concurrency:
   group: "pages"
@@ -15,30 +17,28 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-
-      - name: Setup Node
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
-
       - name: Setup Pages
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
 
-      - name: Upload artifact
+      # Baixa o artefato gerado no workflow de CI
+      - name: Download Build Artifact from CI
+        uses: dawidd6/action-download-artifact@d63b86af1b34672e53c440b1b83979861906bad7
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: "Artifact Analyzer CI Pipeline"
+          run_id: ${{ github.event.workflow_run.id }}
+          name: artifact-analyzer-build
+          path: ./dist
+
+      # Prepara o diretório para o GitHub Pages
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
         with:
           path: './dist'
