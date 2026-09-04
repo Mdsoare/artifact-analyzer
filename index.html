@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Hardened CSP: Permite requisições apenas para a API do VirusTotal -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'self'; script-src 'self'; img-src 'self' data: blob:; font-src 'self'; connect-src https://www.virustotal.com; form-action 'none'; base-uri 'self';" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=(), payment=()" />
+
+    <title>Analisador de Artefatos Threat Intel</title>
+
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <script type="module" src="assets/js/script.js"></script>
+</head>
+
+<body>
+
+    <main class="container">
+        <header>
+            <h1>Analisador Estatístico de Artefatos (VirusTotal API)</h1>
+            <p>Reputação de arquivos por cruzamento de hashes em Engines de Inteligência de Ameaças</p>
+        </header>
+
+        <section class="form-group">
+            <label for="apiKey">Sua API Key do VirusTotal (Privada &amp; Local):</label>
+            <input type="text" id="apiKey" placeholder="Cole sua chave de API v3 do VirusTotal aqui..." value="">
+        </section>
+
+        <section class="form-group">
+            <label for="filePicker">Selecione o arquivo suspeito para triagem:</label>
+            <input type="file" id="filePicker">
+        </section>
+
+        <button type="button" id="btnProcess" class="action-btn">Calcular Hash &amp; Consultar Reputação</button>
+
+        <article class="meta-box" id="metaBox" aria-live="polite"></article>
+
+        <section class="results-panel" id="resultsPanel">
+            <label id="lblResults">Resultado Consolidado da Análise:</label>
+
+            <div class="grid-stats" aria-labelledby="lblResults">
+                <div class="stat-card stat-malicious">
+                    <span id="statMalicious">0</span>
+                    <span class="stat-label">Maliciosos</span>
+                </div>
+                <div class="stat-card stat-suspicious">
+                    <span id="statSuspicious">0</span>
+                    <span class="stat-label">Suspeitos</span>
+                </div>
+                <div class="stat-card stat-undetected">
+                    <span id="statUndetected">0</span>
+                    <span class="stat-label">Limpos</span>
+                </div>
+                <div class="stat-card stat-harmless">
+                    <span id="statHarmless">0</span>
+                    <span class="stat-label">Inofensivos</span>
+                </div>
+            </div>
+
+            <label for="engineLogs" class="label-margin">Veredito dos Principais Mecanismos (Engines):</label>
+            <ul class="engine-logs" id="engineLogs"></ul>
+        </section>
+    </main>
+
+</body>
+
+</html>
