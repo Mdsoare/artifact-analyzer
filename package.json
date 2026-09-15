@@ -18,7 +18,13 @@
     "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\"",
     "test": "npm run lint"
   },
-  "keywords": ["devsecops", "threat-intel", "virustotal", "sha256", "security"],
+  "keywords": [
+    "devsecops",
+    "threat-intel",
+    "virustotal",
+    "sha256",
+    "security"
+  ],
   "author": "Marcelo Soares",
   "license": "MIT",
   "devDependencies": {
@@ -30,5 +36,8 @@
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",
     "vite": "^8.2.2"
+  },
+  "overrides": {
+    "smol-toml": ">1.7.0"
   }
 }
